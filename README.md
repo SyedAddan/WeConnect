@@ -1,2 +1,3 @@
-# WeConnect
-SE Project
+# WeConnect ❤️
+
+Our Fund of SE Project

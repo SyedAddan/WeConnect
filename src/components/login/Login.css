@@ -1,0 +1,13 @@
+.Login {
+  padding: 0 auto;
+}
+
+.Login .form {
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+.login-button {
+  text-align: center;
+  margin: right;
+}

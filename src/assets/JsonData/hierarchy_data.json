@@ -1,0 +1,150 @@
+[
+    {
+        "name": "Syed Addan",
+        "role_name": "President",
+        "role": "President",
+        "children": [
+            {
+                "name" : "Flanah",
+                "role_name" : "Vice President",
+                "role" : "Vice President"
+            },
+            {
+                "name": "Dhimkana",
+                "role_name": "HOD of Projects",
+                "role": "Departmental Head",
+                "children": [
+                    {
+                        "name": "Baka",
+                        "role_name": "AI Expert",
+                        "role": "Member"
+                    },
+                    {
+                        "name": "Sussy",
+                        "role_name": "Web Expert",
+                        "role": "Member"
+                    },
+                    {
+                        "name": "Suiiii",
+                        "role_name": "Cloud Expert",
+                        "role": "Member"
+                    },
+                    {
+                        "name": "Yeeeet",
+                        "role_name": "Blockchain Expert",
+                        "role": "Member"
+                    }
+                ]
+            },
+            {
+                "name": "Bachkana",
+                "role_name": "HOD of Technical",
+                "role": "Departmental Head",
+                "children": [
+                    {
+                        "name": "Oi oi oi",
+                        "role_name": "Lead of AI/DS Team",
+                        "role": "Team Lead",
+                        "children": [
+                            {
+                                "name": "Waka waka",
+                                "role_name": "Member of AI/DS Team",
+                                "role": "Member"
+                            },
+                            {
+                                "name": "Wowww",
+                                "role_name": "Member of AI/DS Team",
+                                "role": "Member"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "UwU",
+                        "role_name": "Lead of Robotics Team",
+                        "role": "Team Lead",
+                        "children": [
+                            {
+                                "name": "Alfredy",
+                                "role_name": "Member of Robotics Team",
+                                "role": "Member"
+                            },
+                            {
+                                "name": "Hitch",
+                                "role_name": "Member of Robotics Team",
+                                "role": "Member"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Ara Ara",
+                        "role_name": "Lead of Cyber Security Team",
+                        "role": "Team Lead",
+                        "children": [
+                            {
+                                "name": "Sike",
+                                "role_name": "Member of Cyber Security Team",
+                                "role": "Member"
+                            },
+                            {
+                                "name": "Our Table",
+                                "role_name": "Member of Cyber Security Team",
+                                "role": "Member"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Simkana",
+                "role_name": "HOD of WIT",
+                "role": "Departmental Head",
+                "children": [
+                    {
+                        "name": "She said she was 12",
+                        "role_name": "Member of WIT",
+                        "role": "Member"
+                    },
+                    {
+                        "name": "WTH",
+                        "role_name": "Member of WIT",
+                        "role": "Member"
+                    }
+                ]
+            },
+            {
+                "name": "Hilwana",
+                "role_name": "HOD of Operations",
+                "role": "Departmental Head",
+                "children": [
+                    {
+                        "name": "Suppy",
+                        "role_name": "Operation Manager",
+                        "role": "Member"
+                    },
+                    {
+                        "name": "The End",
+                        "role_name": "Operation Manager",
+                        "role": "Member"
+                    }
+                ]
+            },
+            {
+                "name": "Oofnana",
+                "role_name": "HOD of Events",
+                "role": "Departmental Head",
+                "children": [
+                    {
+                        "name": "Narutoooo",
+                        "role_name": "Event Manager",
+                        "role": "Member"
+                    },
+                    {
+                        "name": "Sasukeeee",
+                        "role_name": "Event Manager",
+                        "role": "Member"
+                    }
+                ]
+            }
+        ]
+    }
+]

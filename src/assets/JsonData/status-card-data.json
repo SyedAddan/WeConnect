@@ -1,0 +1,24 @@
+[
+    {
+        "icon": "bx bx-user",
+        "count": "Pepe",
+        "title": "Role",
+        "link": "/hierarchy"
+    },
+    {
+        "icon": "bx bx-check-square",
+        "count": "5",
+        "title": "ToDos",
+        "link": "/todo"
+    },
+    {
+        "icon": "bx bx-dollar-circle",
+        "count": "$2,632",
+        "title": "Total income"
+    },
+    {
+        "icon": "bx bx-receipt",
+        "count": "1,711",
+        "title": "Total orders"
+    }
+]

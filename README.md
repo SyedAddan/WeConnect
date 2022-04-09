@@ -1,3 +1,5 @@
-# WeConnect ❤️
+WeConnect
 
-Our Fund of SE Project
+A University Society Management System
+
+With A lot of Features

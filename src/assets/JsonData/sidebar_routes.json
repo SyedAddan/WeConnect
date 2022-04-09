@@ -1,0 +1,27 @@
+[
+    {
+        "display_name": "Dashboard",
+        "route": "/",
+        "icon": "bx bx-chalkboard"
+    },
+    {
+        "display_name": "Hierarchy",
+        "route": "/hierarchy",
+        "icon": "bx bx-network-chart bx-rotate-270"
+    },
+    {
+        "display_name": "Meetings",
+        "route": "/meetings",
+        "icon": "bx bx-calendar"
+    },
+    {
+        "display_name": "To-Do",
+        "route": "/todo",
+        "icon": "bx bx-check-square"
+    },
+    {
+        "display_name": "Suggest/Complain",
+        "route": "/scportal",
+        "icon": "bx bx-plus-circle"
+    }
+]

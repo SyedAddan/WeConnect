@@ -13,20 +13,17 @@ import './assets/css/theme.css'
 import './assets/css/index.css'
 
 import Layout from './components/layout/Layout'
-import Login from './pages/Login'
 
 const store = createStore(
   rootReducer
 )
-
-var loggedIn = true
 
 document.title = 'WeConnect'
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      { loggedIn ? <Layout /> : <Login />}
+      <Layout />
     </React.StrictMode>
   </Provider>,
   document.getElementById('root')

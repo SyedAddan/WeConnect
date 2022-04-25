@@ -15,13 +15,23 @@ class App extends Component {
   }
 
   pushUserToDB = async () => {
+    const maps = {
+      "President": 1,
+      "Vice President": 2,
+      "Departmental Head": 3,
+      "Team Lead": 4,
+      "Team Member": 5,
+    }
+
     await axios.post(
-      "/api/putData", {
+      "/putData", {
+        pri : maps[this.state.role],
         name: this.state.name,
         email: this.state.email,
         password: this.state.password,
         role: this.state.role,
         phone: this.state.phone,
+        current: [true, false][Math.floor(Math.random() * 2)]
       }
     )
   }

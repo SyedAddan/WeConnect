@@ -10,6 +10,11 @@ const ThemeReducer = (state = {}, action) => {
                 ...state,
                 color: action.payload
             }
+        case 'SET_LOGIN':
+            return {
+                ...state,
+                login: action.payload
+            }
         default:
             return state
     }

@@ -1,30 +1,20 @@
-import React, { useState } from 'react'
-import StatusCard from '../components/status-card/StatusCard'
+import React, { useState, useEffect } from 'react'
+import Topology from '../components/topology/Topology'
 import axios from 'axios'
 
 const Hierarchy = () => {
-    const [ temp, setTemp ] = useState("")
+    const [ users, setUsers ] = useState([])
 
-    axios.get('/api/').then( async (res) => {
-        await setTemp(res.data.temp)
-    })
+    useEffect(() => {
+        axios.get("/getData").then( (res) => {
+            setUsers(res.data)
+        })
+    }, [])
 
     return (
         <div>
             <h2 className="page-header">Hierarchy</h2>
-            <div className="row">
-                <div className="col-6">
-                    <div className="row">
-                        <div className="col-6">
-                        <StatusCard
-                            icon={ "bx bx-leaf" }
-                            count={ temp }
-                            title={ "Temperature" }
-                        />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Topology data = { users } />
         </div>  
     )
 }

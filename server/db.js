@@ -8,7 +8,7 @@ module.exports = async () => {
             useUnifiedTopology: true
         }
         await mongoose.connect(
-            'mongodb+srv://admin:1234@userdata.a0x5w.mongodb.net/UserDB?retryWrites=true&w=majority',
+            process.env.DB,
             connectionParams
         )
         console.log("Connected to Database!")

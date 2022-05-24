@@ -12,15 +12,28 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import ThemeAction from "../../redux/actions/ThemeAction";
+import axios from "axios";
 
 const Layout = () => {
   const themeReducer = useSelector((state) => state.ThemeReducer);
 
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const [tapLogin, setTapLogin] = useState(false);
+
   const passData = (data) => {
-    setLoggedIn(data)
+    setTapLogin(data)
   };
+
+  const lookForLogin = async () => {
+    const users = await axios.get('/getUsers');
+    users.data.forEach((user) => {
+      if (user.current === true)
+      {
+        setLoggedIn(true)
+      }
+    })
+  }
 
   const dispatch = useDispatch();
 
@@ -32,7 +45,9 @@ const Layout = () => {
     dispatch(ThemeAction.setMode(themeClass));
 
     dispatch(ThemeAction.setColor(colorClass));
-  }, [dispatch]);
+
+    lookForLogin()
+  }, [dispatch, tapLogin]);
 
   return (
     <>
@@ -55,7 +70,7 @@ const Layout = () => {
           />
         </BrowserRouter>
       ) : (
-        <Login passData = {passData} />
+        <Login passData = {passData}/>
       )}
     </>
   );

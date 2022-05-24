@@ -12,6 +12,8 @@ import user_image from '../../assets/images/pepe.png'
 
 import user_menu from '../../assets/JsonData/user_menus.json'
 
+import axios from 'axios'
+
 const curr_user = {
     display_name: 'Pepe',
     image: user_image
@@ -28,40 +30,50 @@ const renderUserToggle = (user) => (
     </div>
 )
 
+const onClickLogout = async () => {
+    const userFind = await axios.get(
+        '/getLoginUser'
+    )
+
+    await axios.put(
+        '/toggleLogin', {
+            id: userFind.data._id,
+            current: userFind.data.current
+        }
+    )
+
+    window.location.reload()
+}
+
 const renderUserMenu = (item, index) => (
-    <Link to='/' key={index}>
-        <div className="notification-item">
-            <i className={item.icon}></i>
-            <span>{item.content}</span>
-        </div>
-    </Link>
+    (item.content !== "Logout") ?
+        <Link to='/' key={index}>
+            <div className="notification-item">
+                <i className={item.icon}></i>
+                <span>{item.content}</span>
+            </div>
+        </Link>
+        :
+        <Link to='/' key={index} onClick={onClickLogout}>
+            <div className="notification-item">
+                <i className={item.icon}></i>
+                <span>{item.content}</span>
+            </div>
+        </Link>
 )
 
 const Topnav = () => {
     return (
         <div className='topnav'>
-            <div className="topnav__search">
-                {/* <input type="text" placeholder='Search here...' />
-                <i className='bx bx-search'></i> */}
-            </div>
+            <div className="topnav__search"></div>
             <div className="topnav__right">
                 <div className="topnav__right-item">
-                    {/* dropdown here */}
                     <Dropdown
                         customToggle={() => renderUserToggle(curr_user)}
                         contentData={user_menu}
                         renderItems={(item, index) => renderUserMenu(item, index)}
                     />
                 </div>
-                {/* <div className="topnav__right-item">
-                    <Dropdown
-                        icon='bx bx-bell'
-                        badge='12'
-                        contentData={notifications}
-                        renderItems={(item, index) => renderNotificationItem(item, index)}
-                        renderFooter={() => <Link to='/'>View All</Link>}
-                    />
-                </div> */}
                 <div className="topnav__right-item">
                     <ThemeMenu />
                 </div>

@@ -6,7 +6,7 @@ const Hierarchy = () => {
     const [ users, setUsers ] = useState([])
 
     useEffect(() => {
-        axios.get("/getData").then( (res) => {
+        axios.get("/getUsers").then( (res) => {
             setUsers(res.data)
         })
     }, [])

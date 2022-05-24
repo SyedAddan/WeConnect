@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-
 module.exports = async () => {
     try {
         const connectionParams = {
@@ -13,6 +12,7 @@ module.exports = async () => {
         )
         console.log("Connected to Database!")
     } catch (error) {
-        console.log("Could not Connect to Database!", error)
+        console.log("Could not Connect to Database!")
+        console.log(error.code)
     }
 }

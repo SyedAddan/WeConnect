@@ -1,10 +1,7 @@
 import React, { useRef, useState } from "react";
 import "./styles.css";
 import { useDetectOutsideClick } from "./useDetectOutsideClick";
-/*
- * Read the blog post here:
- * https://letsbuildui.dev/articles/building-a-dropdown-menu-component-with-react-hooks
- */
+
 export default function App(props) {
   const dropdownRef = useRef(null);
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);

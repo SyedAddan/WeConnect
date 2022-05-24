@@ -6,7 +6,16 @@ class App extends Component {
   constructor() {
     super()
 
-    this.state = { form: "login", name: '', email: '', password: '', role: '', phone: '', confirmedPassword: ''}
+    this.state = { 
+      form: "login", 
+      name: '', 
+      email: '', 
+      password: '', 
+      role: '', 
+      phone: '', 
+      confirmedPassword: '',
+      error: 'Everything Seems to be fine!'
+    }
 
     this.toggle = {
       login: "register",
@@ -16,30 +25,68 @@ class App extends Component {
 
   pushUserToDB = async () => {
     const maps = {
-      "President": 1,
-      "Vice President": 2,
-      "Departmental Head": 3,
-      "Team Lead": 4,
-      "Team Member": 5,
-    }
-
-    await axios.post(
-      "/putData", {
-        pri : maps[this.state.role],
-        name: this.state.name,
-        email: this.state.email,
-        password: this.state.password,
-        role: this.state.role,
-        phone: this.state.phone,
-        current: [true, false][Math.floor(Math.random() * 2)]
+        "President": 1,
+        "Vice President": 2,
+        "Departmental Head": 3,
+        "Team Lead": 4,
+        "Team Member": 5,
       }
-    )
+      
+    try {
+      const {data: res} = await axios.post(
+        "/addUser", {
+          pri : maps[this.state.role],
+          name: this.state.name,
+          email: this.state.email,
+          password: this.state.password,
+          confirmedPassword: this.state.confirmedPassword,
+          role: this.state.role,
+          phone: this.state.phone,
+          current: false
+        }
+      )
+      console.log(res.message)
+    } catch (error) {
+      console.log(error)
+      if (error.responce && error.responce.status >= 400 && error.responce.status <= 500)
+      {
+        this.setState({error: error.responce.data.message})
+      }
+    }
   }
 
-  onSubmit(e) {
-    e.preventDefault()
-    this.state.form === "register" ? this.pushUserToDB() : console.log("Logging in")
+  authUser = async () => {
+    try{
+      const {data: res} = await axios.put(
+        "/authUser", {
+          email: this.state.email,
+          password: this.state.password,
+          role: this.state.role
+        }
+      )
+      return res.data
+    } catch(error) {
+      console.log("Hi")
+      console.log(error.request)
+    }
   }
+
+  loginUser = async () => {
+    await this.authUser()
+    // const userFind = await this.authUser()
+    // console.log(userFind)
+    // await axios.put(
+    //   '/toggleLogin', {
+    //     id: userFind._id,
+    //     current: userFind.current
+    //   }
+    // )
+    // this.props.passData(true)
+  }
+
+
+
+
 
   onChangeName = (e) => {
     this.setState({name: e.target.value})
@@ -93,9 +140,10 @@ class App extends Component {
                 <Dropdown getRole = {this.getRole} />
               </>
             )}
+            {this.state.error && <div className="errmsg">{this.state.error}</div>}
             <button onClick={(e) => {
-              this.props.passData(true)
-              this.onSubmit(e)
+              e.preventDefault()
+              this.state.form === "register" ? this.pushUserToDB() : this.loginUser()
             }} className="button-primary">Submit</button>
           </form>
         </div>

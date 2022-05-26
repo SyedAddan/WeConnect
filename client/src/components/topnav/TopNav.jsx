@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import './topnav.css'
 
@@ -8,15 +8,43 @@ import Dropdown from '../dropdown/Dropdown'
 
 import ThemeMenu from '../thememenu/ThemeMenu'
 
-import user_image from '../../assets/images/pepe.png'
-
 import user_menu from '../../assets/JsonData/user_menus.json'
 
 import axios from 'axios'
 
-const curr_user = {
-    display_name: 'Pepe',
-    image: user_image
+var curr_user = {
+    display_name: 'Name',
+    image: "https://i.imgur.com/2buUV33.png"
+}
+
+const userFixer = async () => {
+    const userFind = await axios.get('/getLoginUser')
+    const name = userFind.data.userName
+    var icon
+
+    if (userFind.data.userPri === 1){
+        icon = 'https://i.imgur.com/3F2RyZI.png'
+    }
+    else if (userFind.data.userPri === 2){
+        icon = 'https://i.imgur.com/ck9NFEZ.png'
+    }
+    else if (userFind.data.userPri === 3){
+        icon = 'https://i.imgur.com/1z2Umfw.png'
+    }
+    else if (userFind.data.userPri === 4){
+        icon = 'https://i.imgur.com/IS9QyvN.png'
+    }
+    else if (userFind.data.userPri === 5){
+        icon = 'https://i.imgur.com/qnX5Ybq.png'
+    }
+    else {
+        icon = 'https://i.imgur.com/2buUV33.png'
+    }
+
+    curr_user = {
+        display_name: name,
+        image: icon
+    }
 }
 
 const renderUserToggle = (user) => (
@@ -31,10 +59,7 @@ const renderUserToggle = (user) => (
 )
 
 const onClickLogout = async () => {
-    const userFind = await axios.get(
-        '/getLoginUser'
-    )
-
+    const userFind = await axios.get('/getLoginUser')
     await axios.put(
         '/toggleLogin', {
             id: userFind.data._id,
@@ -63,6 +88,10 @@ const renderUserMenu = (item, index) => (
 )
 
 const Topnav = () => {
+    useEffect(() => {
+        userFixer()
+    }, [])
+
     return (
         <div className='topnav'>
             <div className="topnav__search"></div>

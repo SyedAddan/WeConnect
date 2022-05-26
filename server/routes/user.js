@@ -9,7 +9,7 @@ router.get("/getLoginUser", userController.getLoginUser)
 
 router.post("/addUser", userController.addUser)
 
-router.put("/authUser", userController.authUser)
+router.post("/authUser", userController.authUser)
 
 router.put("/toggleLogin", userController.toggleLogin)
 

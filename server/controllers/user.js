@@ -85,20 +85,17 @@ const authUser = async (req, res) => {
 
         const userFind = await UserModel.findOne({ userMail: req.body.email })
         if (!userFind) {
-            console.log("Here dasdas")
-            console.log(userFind)
+            console.log("Invalid Mail!")
             return res.status(401).send({message: "Invalid Mail!"})
         }
         const validPassword = req.body.password === userFind.userPassword
         if (!validPassword) {
-            console.log("Here khaskhas")   
-            console.log(userFind)
+            console.log("Invalid Password!")
             return res.status(401).send({message: "Invalid Password!"})
         }
         const validRole = req.body.role === userFind.userRole
         if (!validRole) {
-            console.log("Here sasas")
-            console.log(userFind)
+            console.log("Invalid Role!")
             return res.status(401).send({message: "Invalid Role!"})
         }
 
@@ -139,6 +136,7 @@ const validateRegister = (data) => {
         name: joi.string().required().label('name'),
         email: joi.string().email().required().label('email'),
         password: passwordComplexity().required().label('password'),
+        confirmedPassword: joi.string().required().label('confirmedPassword'),
         role: joi.string().required().label('role'),
         phone: joi.string().required().label('phone'),
         current: joi.boolean().required().label('current')

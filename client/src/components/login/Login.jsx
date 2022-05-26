@@ -6,15 +6,15 @@ class App extends Component {
   constructor() {
     super()
 
-    this.state = { 
-      form: "login", 
-      name: '', 
-      email: '', 
-      password: '', 
-      role: '', 
-      phone: '', 
+    this.state = {
+      form: "login",
+      name: '',
+      email: '',
+      password: '',
+      role: '',
+      phone: '',
       confirmedPassword: '',
-      error: 'Everything Seems to be fine!'
+      error: ''
     }
 
     this.toggle = {
@@ -25,63 +25,68 @@ class App extends Component {
 
   pushUserToDB = async () => {
     const maps = {
-        "President": 1,
-        "Vice President": 2,
-        "Departmental Head": 3,
-        "Team Lead": 4,
-        "Team Member": 5,
-      }
-      
+      "President": 1,
+      "Vice President": 2,
+      "Departmental Head": 3,
+      "Team Lead": 4,
+      "Team Member": 5,
+    }
+
     try {
-      const {data: res} = await axios.post(
+      const { data: res } = await axios.post(
         "/addUser", {
-          pri : maps[this.state.role],
-          name: this.state.name,
-          email: this.state.email,
-          password: this.state.password,
-          confirmedPassword: this.state.confirmedPassword,
-          role: this.state.role,
-          phone: this.state.phone,
-          current: false
-        }
+        pri: maps[this.state.role],
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password,
+        confirmedPassword: this.state.confirmedPassword,
+        role: this.state.role,
+        phone: this.state.phone,
+        current: false
+      }
       )
       console.log(res.message)
     } catch (error) {
       console.log(error)
-      if (error.responce && error.responce.status >= 400 && error.responce.status <= 500)
-      {
-        this.setState({error: error.responce.data.message})
+      if (error.responce && error.responce.status >= 400 && error.responce.status <= 500) {
+        this.setState({ error: error.responce.data.message })
       }
     }
   }
 
-  authUser = async () => {
-    try{
-      const {data: res} = await axios.put(
-        "/authUser", {
-          email: this.state.email,
-          password: this.state.password,
-          role: this.state.role
-        }
-      )
-      return res.data
-    } catch(error) {
-      console.log("Hi")
-      console.log(error.request)
-    }
-  }
 
   loginUser = async () => {
-    await this.authUser()
-    // const userFind = await this.authUser()
-    // console.log(userFind)
-    // await axios.put(
-    //   '/toggleLogin', {
-    //     id: userFind._id,
-    //     current: userFind.current
-    //   }
-    // )
-    // this.props.passData(true)
+    var user
+    await axios.post(
+      "/authUser", {
+        email: this.state.email,
+        password: this.state.password,
+        role: this.state.role
+      }
+    ).then((responce) =>{
+      user = responce.data
+    }).catch((err) => {
+      console.log(err)
+    })
+
+    if (user) {
+      await axios.put(
+        '/toggleLogin', {
+          id: user.data._id,
+          current: user.data.current
+        }
+      )
+      this.props.passData(true)
+      window.location.reload()
+      console.log("Log In Successful!")
+      await axios.post(
+        '/notification/send', {
+          email: user.data.userMail
+        }
+      )
+    } else {
+      this.setState({ error: "Authentication Not Successfull!" })
+    }
   }
 
 
@@ -89,27 +94,27 @@ class App extends Component {
 
 
   onChangeName = (e) => {
-    this.setState({name: e.target.value})
+    this.setState({ name: e.target.value })
   }
 
   onChangeEmail = (e) => {
-    this.setState({email: e.target.value})
+    this.setState({ email: e.target.value })
   }
 
   onChangePhone = (e) => {
-    this.setState({phone: e.target.value})
+    this.setState({ phone: e.target.value })
   }
 
   onChangePassword = (e) => {
-    this.setState({password: e.target.value})
+    this.setState({ password: e.target.value })
   }
 
   onChangeConfirmedPassword = (e) => {
-    this.setState({confirmedPassword: e.target.value})
+    this.setState({ confirmedPassword: e.target.value })
   }
-  
+
   getRole = (data) => {
-    this.setState({role: data})
+    this.setState({ role: data })
   }
 
   render() {
@@ -117,27 +122,25 @@ class App extends Component {
       <div className="container">
         <div
           style={{
-            transform: `translate(${
-              this.state.form === "login" ? 0 : 250
-            }px, 0px)`,
+            transform: `translate(${this.state.form === "login" ? 0 : 250}px, 0px)`,
           }}
           className="form-div"
         >
           <form>
             {this.state.form === "login" ? (
               <>
-                <input placeholder="Email" onChange={ this.onChangeEmail } type="text" />
-                <input placeholder="Password" onChange={ this.onChangePassword } type="password" />
-                <Dropdown getRole = {this.getRole} />
+                <input placeholder="Email" onChange={this.onChangeEmail} type="text" />
+                <input placeholder="Password" onChange={this.onChangePassword} type="password" />
+                <Dropdown getRole={this.getRole} />
               </>
             ) : (
               <>
-                <input placeholder="Name" onChange={ this.onChangeName } type="text" />
-                <input placeholder="Email" onChange={ this.onChangeEmail } type="text" />
-                <input placeholder="Phone#" onChange={ this.onChangePhone } type="text" />
-                <input placeholder="Password" onChange={ this.onChangePassword } type="password" />
-                <input placeholder="Retype Password" onChange={ this.onChangeConfirmedPassword } type="password" />
-                <Dropdown getRole = {this.getRole} />
+                <input placeholder="Name" onChange={this.onChangeName} type="text" />
+                <input placeholder="Email" onChange={this.onChangeEmail} type="text" />
+                <input placeholder="Phone#" onChange={this.onChangePhone} type="text" />
+                <input placeholder="Password" onChange={this.onChangePassword} type="password" />
+                <input placeholder="Retype Password" onChange={this.onChangeConfirmedPassword} type="password" />
+                <Dropdown getRole={this.getRole} />
               </>
             )}
             {this.state.error && <div className="errmsg">{this.state.error}</div>}
@@ -149,9 +152,7 @@ class App extends Component {
         </div>
         <div
           style={{
-            transform: `translate(${
-              this.state.form === "login" ? 0 : -250
-            }px, 0px)`,
+            transform: `translate(${this.state.form === "login" ? 0 : -250}px, 0px)`,
           }}
           className="button-div"
         >
@@ -168,7 +169,7 @@ class App extends Component {
             {this.toggle[this.state.form]}
           </button>
         </div>
-      </div> 
+      </div>
     );
   }
 }

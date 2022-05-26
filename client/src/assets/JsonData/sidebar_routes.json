@@ -20,8 +20,18 @@
         "icon": "bx bx-check-square"
     },
     {
-        "display_name": "Suggest/Complain",
-        "route": "/scportal",
+        "display_name": "Suggest",
+        "route": "/suggest",
         "icon": "bx bx-plus-circle"
+    },
+    {
+        "display_name": "Complain",
+        "route": "/complain",
+        "icon": "bx bx-minus-circle"
+    },
+    {
+        "display_name": "All S&C",
+        "route": "/sandc",
+        "icon": "fa-solid fa-list-ol"
     }
 ]

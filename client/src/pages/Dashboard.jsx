@@ -1,12 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Chart from 'react-apexcharts'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
 
 import StatusCard from '../components/status-card/StatusCard'
 import Table from '../components/table/Table'
 import Badge from '../components/badge/Badge'
-import statusCards from '../assets/JsonData/status-card-data.json'
+
+
+
+var statusCards = [
+    {
+        icon: "fa-solid fa-chess-board",
+        count: "Name",
+        title: "Role",
+        link: "/hierarchy"
+    },
+    {
+        icon: "bx bx-check-square",
+        count: "0",
+        title: "Remaining ToDos",
+        link: "/todo"
+    },
+    {
+        icon: "bx bx-dollar-circle",
+        count: "$2,632",
+        title: "Total income"
+    },
+    {
+        icon: "bx bx-receipt",
+        count: "1,711",
+        title: "Total orders"
+    }
+]
 
 const chartOptions = {
     series: [{
@@ -159,6 +186,65 @@ const renderOrderBody = (item, index) => (
 const Dashboard = () => {
 
     const themeReducer = useSelector(state => state.ThemeReducer.mode)
+    const [ todos, setTodos ] = useState("0")
+
+    useEffect(() => {
+
+        const statusCardsCreator = async () => {
+            const userFind = await axios.get('/getLoginUser')
+            var icon
+            var todoCount = 0
+            const allTodos = await axios.get('/todo/gettodo')
+            allTodos.data.forEach((todo) => {
+                (todo.status === false && userFind.data.userMail === todo.userMail) && todoCount++
+            })
+            setTodos(todoCount.toString())
+        
+            if (userFind.data.userPri === 1){
+                icon = 'fa-solid fa-chess-king'
+            }
+            else if (userFind.data.userPri === 2){
+                icon = 'fa-solid fa-chess-queen'
+            }
+            else if (userFind.data.userPri === 3){
+                icon = 'fa-solid fa-chess-rook'
+            }
+            else if (userFind.data.userPri === 4){
+                icon = 'fa-solid fa-chess-knight'
+            }
+            else if (userFind.data.userPri === 5){
+                icon = 'fa-solid fa-chess-pawn'
+            }
+            else {
+                icon = 'fa-solid fa-chess-board'
+            }
+            statusCards = [
+                {
+                    icon: icon,
+                    count: userFind.data.userName,
+                    title: userFind.data.userRole,
+                    link: "/hierarchy"
+                },
+                {
+                    icon: "bx bx-check-square",
+                    count: todos,
+                    title: "Remaining ToDos",
+                    link: "/todo"
+                },
+                {
+                    icon: "bx bx-dollar-circle",
+                    count: "$2,632",
+                    title: "Total income"
+                },
+                {
+                    icon: "bx bx-receipt",
+                    count: "1,711",
+                    title: "Total orders"
+                }
+            ]
+        }
+        statusCardsCreator()
+    }, [todos])
 
     return (
         <div>

@@ -66,7 +66,7 @@ const Sidebar = (props) => {
                                 </Link>
                             )
                         } else {
-                            return(<Link to={'/'} key={index}/>)
+                            return(<></>)
                         }
                     }
                 })

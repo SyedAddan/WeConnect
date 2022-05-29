@@ -8,7 +8,9 @@ router.post("/addtodo", todoController.addToDo)
 
 router.get("/gettodo", todoController.getToDo)
 
-router.put("/updatetodo", todoController.updateToDo)
+router.post("/updatetodo", todoController.updateToDo)
+
+router.get("/getonetodo", todoController.getOneToDo)
 
 
 module.exports = router

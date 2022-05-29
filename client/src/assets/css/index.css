@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
 
-@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 :root {
     --main-bg: #ffffff;
     --second-bg: #fafafb;
@@ -171,34 +170,6 @@ button {
 .page-header {
     margin-bottom: 40px;
     text-transform: capitalize;
-}
-
- 
-.isa_info, .isa_success, .isa_warning, .isa_error {
-margin: 10px 0px;
-padding:12px;
- 
-}
-.isa_info {
-    color: #00529B;
-    background-color: #BDE5F8;
-}
-.isa_success {
-    color: #4F8A10;
-    background-color: #DFF2BF;
-}
-.isa_warning {
-    color: #9F6000;
-    background-color: #FEEFB3;
-}
-.isa_error {
-    color: #D8000C;
-    background-color: #FFD2D2;
-}
-.isa_info i, .isa_success i, .isa_warning i, .isa_error i {
-    margin:10px 22px;
-    font-size:2em;
-    vertical-align:middle;
 }
 
 .card {

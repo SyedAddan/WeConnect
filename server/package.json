@@ -11,20 +11,14 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
-    "date-and-time": "^2.3.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "fs": "^0.0.1-security",
-    "hogan": "^1.0.2",
-    "hogan.js": "^3.0.2",
     "joi": "^17.6.0",
     "joi-password-complexity": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
-    "node-mailjet": "^3.4.1",
     "nodemailer": "^6.7.5",
     "nodemon": "^2.0.16",
-    "pirates": "^4.0.5",
     "request": "^2.88.2"
   }
 }

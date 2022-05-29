@@ -14,9 +14,7 @@ const Hierarchy = () => {
     return (
         <div>
             <h2 className="page-header">Hierarchy</h2>
-            <div className="card">
-                <Topology data = { users } />
-            </div>
+            <Topology data = { users } />
         </div>  
     )
 }

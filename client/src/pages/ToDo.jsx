@@ -6,12 +6,12 @@ import { Checkbox } from '@mui/material'
 
 import Table from '../components/table/Table'
 
-const updateTodo = async (id, status) => {
-    await axios.put(
+const updateTodo = async (task, status) => {
+    await axios.post(
         '/todo/updatetodo', {
-        id: id,
-        status: status
-    }
+            task: task,
+            status: status
+        }
     )
 }
 
@@ -23,17 +23,15 @@ const renderToDoList = (item, index) => (
     <tr key={index}>
         <td>{item.task}</td>
         <td>{item.description}</td>
-        <td>
-            <Checkbox
-                checked={item.status && true}
-                onChange={(e) => {
+        <Checkbox
+            checked={item.status && true}
+            onChange={(e) => {
                     e.preventDefault()
-                    updateTodo(item.id, item.status)
+                    updateTodo(item.task, item.status)
                     item.status = !item.status
                 }
-                }
-            />
-        </td>
+            }
+        />
         <td>{moment(item.duedate).format('dddd, MMMM Do YYYY, h:mm:ss a')}</td>
     </tr>
 )
@@ -41,12 +39,12 @@ const renderToDoList = (item, index) => (
 const pushToDo = async (mail, task, description, status, duedate) => {
     await axios.post(
         "/todo/addtodo", {
-            mail: mail,
-            task: task,
-            description: description,
-            status: status,
-            duedate: duedate
-        }
+        mail: mail,
+        task: task,
+        description: description,
+        status: status,
+        duedate: duedate
+    }
     )
 }
 
@@ -63,9 +61,8 @@ const ToDo = () => {
     const [description, setDescription] = useState('')
     const status = false
     const [time, setTime] = useState('')
-    const [duedate, setDuedate] = useState(new Date())
+    const [duedate, setDuedate] = useState('')
     const [error, setError] = useState('')
-    const [show, setShow] = useState(false)
 
     useEffect(() => {
         const loginUser = async () => {
@@ -79,19 +76,18 @@ const ToDo = () => {
             data.forEach((todo) => {
                 if (todo.userMail === user?.data?.userMail) {
                     const oneTodo = {
-                        id: todo._id,
                         task: todo.task,
                         description: todo.description,
                         status: todo.status,
                         duedate: todo.duedate
                     }
-                    tempBody.push(oneTodo)
+                    body.push(oneTodo)
                 }
             })
             setBody(tempBody)
         }
         getTodos()
-    }, [show])
+    }, [body, user])
 
     return (
         <div>
@@ -102,23 +98,14 @@ const ToDo = () => {
                         <div>
                             <h2>All ToDos</h2>
                         </div>
-                        <div className="card" style={{ alignItems: "center" }}>
-                            <button className="button-primary" style={{ alignItems: "center" }} onClick={(e) => {
-                                e.preventDefault()
-                                setShow(!show)
-                                setError('')
-                            }}>
-                                { show ? "Hide" : "Show"}
-                            </button>
-                        </div>
-                        {show && <div className='card'>
+                        <div className='card'>
                             <Table
                                 headData={head}
                                 renderHead={(item, index) => renderToDoHead(item, index)}
                                 bodyData={body}
                                 renderBody={(item, index) => renderToDoList(item, index)}
                             />
-                        </div>}
+                        </div>
                     </div>
                     <div className='card'>
                         <div>
@@ -167,7 +154,7 @@ const ToDo = () => {
                                         <h3>Select a Time!</h3>
                                         <br></br>
                                         <form>
-                                            <label htmlFor="stime">Due Time:</label>
+                                            <label for="stime">Due Time:</label>
                                             <input type="time" name="stime" onChange={
                                                 (e) => {
                                                     setTime(e.target.value)
@@ -187,17 +174,14 @@ const ToDo = () => {
                                 } else if (description === "") {
                                     setError("Description Can't be empty!")
                                 } else {
-                                    setError("Something went Wrong!")
+                                    setError("Soemthing went Wrong!")
                                 }
                             } else {
                                 try {
                                     duedate.setHours(parseInt(time.slice(0, 2)), parseInt(time.slice(3, 5)))
-                                    try {
-                                        pushToDo(user.data.userMail, task, description, status, duedate.toISOString())
-                                        setError("ToDo Added!")
-                                    } catch {
-                                        setError("Something went Wrong!")
-                                    }
+                                    pushToDo(user.data.userMail, task, description, status, duedate.toISOString())
+                                    setError("")
+                                    window.location.reload()
                                 } catch {
                                     setError("Please Enter Date and Time Correctly!")
                                 }
@@ -205,35 +189,9 @@ const ToDo = () => {
                         }}>
                             Add
                         </button>
-                        {(() => {
-                            if (error === "") {
-                                return (
-                                    <></>
-                                )
-                            }
-                            else if (error === "ToDo Added!") {
-                                return (
-                                    <div className='isa_success'>
-                                        <i className="fa-solid fa-thumbs-up"></i>
-                                        {error}
-                                    </div>
-                                )
-                            } else if (error === "Something went Wrong!") {
-                                return (
-                                    <div className="isa_error">
-                                        <i className="fa-solid fa-bomb"></i>
-                                        {error}
-                                    </div>
-                                )
-                            } else  {
-                                return (
-                                    <div className="isa_warning">
-                                        <i className="fa-solid fa-explosion"></i>
-                                        {error}
-                                    </div>
-                                )
-                            }
-                        })()}
+                        {
+                            error && <p>{error}</p>
+                        }
                     </div>
                 </div>
             </div>

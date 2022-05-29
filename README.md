@@ -1,11 +1,7 @@
 WeConnect
+
 A University Society Management System
 
-With MERN Stack
+With A lot of Features
 
-Implemented All CRUD application
-
-The server uses a RESTful API
-and the client uses axios to make requests to the server
-
-(Completed MashAllah :))
+(Ongoing...)

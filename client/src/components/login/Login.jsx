@@ -81,7 +81,8 @@ class App extends Component {
       console.log("Log In Successful!")
       await axios.post(
         '/notification/send', {
-          email: user.data.userMail
+          email: user.data.userMail,
+          by: user.data.userName
         }
       )
     } else {

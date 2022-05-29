@@ -6,18 +6,9 @@ const getToDo = async (req, res) => {
         if (err){
             res.send(err)
         }
+        console.log("ToDos Sent Your Way 🎌!")
         res.send(doc)
     }).clone()
-}
-
-const getOneToDo = async (req, res) => {
-    await ToDoModel.findOne(
-        { status: false }, (err, doc) => {
-        if (err) {
-            return console.log(err)
-        }
-        res.send(doc)
-    })
 }
 
 const addToDo = async (req, res) => {
@@ -25,7 +16,7 @@ const addToDo = async (req, res) => {
     const task = req.body.task
     const description = req.body.description
     const status = false
-    const duedate = req.body.duedate  
+    const duedate = req.body.duedate 
 
     const todo = new ToDoModel({
         userMail: userMail,
@@ -37,26 +28,25 @@ const addToDo = async (req, res) => {
 
     await todo.save((err, doc) => {
         if (err) {
-            console.log(err)
+            console.log(err + " 😫!")
         } else {
-            console.log("New ToDo Created!")
+            console.log("New ToDo Created ✅!")
         }
     })
 }
 
 const updateToDo = async (req, res) => {
-    await ToDoModel.updateOne({task: req.body.task}, {status: !req.body.status}, (err, doc) => {
+    await ToDoModel.updateOne({_id: req.body.id}, {status: !req.body.status}, (err, doc) => {
         if (err) {
-            return console.log(err)
+            return console.log(err + " 🤷‍♂️!")
         }
-        console.log("ToDo Modified!")
+        console.log("ToDo Modified 🏀!")
     }).clone()
 }
 
 
 module.exports = {
     getToDo,
-    getOneToDo,
     addToDo,
     updateToDo
 }

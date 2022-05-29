@@ -1,11 +1,11 @@
 const mongoose = require("mongoose")
 
-const todoSchema = new mongoose.Schema({
-    userMail: {
+const SuggSchema = new mongoose.Schema({
+    by: {
         type: String,
         required: true
     },
-    task: {
+    topic: {
         type: String,
         required: true
     },
@@ -13,15 +13,11 @@ const todoSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status: {
-        type: Boolean,
-        required: true
-    },
-    duedate: {
+    submittedOn: {
         type: String,
         required: true
     }
 })
 
-const todo = mongoose.model("ToDoDB", todoSchema)
-module.exports = todo
+const sugg = mongoose.model("SuggestionsDB", SuggSchema)
+module.exports = sugg

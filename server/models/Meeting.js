@@ -1,11 +1,11 @@
 const mongoose = require("mongoose")
 
-const todoSchema = new mongoose.Schema({
-    userMail: {
+const meetingSchema = new mongoose.Schema({
+    by: {
         type: String,
         required: true
     },
-    task: {
+    topic: {
         type: String,
         required: true
     },
@@ -13,15 +13,19 @@ const todoSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status: {
-        type: Boolean,
+    stime: {
+        type: String,
         required: true
     },
-    duedate: {
+    etime: {
         type: String,
+        required: true
+    },
+    status: {
+        type: Boolean,
         required: true
     }
 })
 
-const todo = mongoose.model("ToDoDB", todoSchema)
-module.exports = todo
+const meeting = mongoose.model("MeetingDB", meetingSchema)
+module.exports = meeting

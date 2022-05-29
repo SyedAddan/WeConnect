@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import Chart from 'react-apexcharts'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import moment from 'moment'
 
 import StatusCard from '../components/status-card/StatusCard'
 import Table from '../components/table/Table'
-import Badge from '../components/badge/Badge'
 
 
 
@@ -18,29 +18,31 @@ var statusCards = [
         link: "/hierarchy"
     },
     {
-        icon: "bx bx-check-square",
+        icon: "fa-solid fa-check",
         count: "0",
-        title: "Remaining ToDos",
+        title: "All Remaining ToDos",
         link: "/todo"
     },
     {
-        icon: "bx bx-dollar-circle",
-        count: "$2,632",
-        title: "Total income"
+        icon: "fa-solid fa-handshake",
+        count: "0",
+        title: "Upcoming Meets",
+        link: "/meetings"
     },
     {
-        icon: "bx bx-receipt",
-        count: "1,711",
-        title: "Total orders"
+        icon: "bx bx-plus-circle",
+        count: "?",
+        title: "Add Suggestion",
+        link: "/suggest"
     }
 ]
 
 const chartOptions = {
     series: [{
-        name: 'Online Customers',
-        data: [40,70,20,90,36,80,30,91,60]
+        name: 'Suggestions',
+        data: [40, 70, 20, 90, 36, 80, 30, 91, 60]
     }, {
-        name: 'Store Customers',
+        name: 'Complaints',
         data: [40, 30, 70, 80, 40, 16, 40, 20, 51]
     }],
     options: {
@@ -55,7 +57,7 @@ const chartOptions = {
             curve: 'smooth'
         },
         xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
+            categories: ["1st W.", "2nd W.", "3rd W.", "4th W.", "5th W.", "6th W.", "7th W.", "8th W.", "9th W."]
         },
         legend: {
             position: 'top'
@@ -66,153 +68,91 @@ const chartOptions = {
     }
 }
 
-const topCustomers = {
-    head: [
-        'user',
-        'total orders',
-        'total spending'
-    ],
-    body: [
-        {
-            "username": "john doe",
-            "order": "490",
-            "price": "$15,870"
-        },
-        {
-            "username": "frank iva",
-            "order": "250",
-            "price": "$12,251"
-        },
-        {
-            "username": "anthony baker",
-            "order": "120",
-            "price": "$10,840"
-        },
-        {
-            "username": "frank iva",
-            "order": "110",
-            "price": "$9,251"
-        },
-        {
-            "username": "anthony baker",
-            "order": "80",
-            "price": "$8,840"
-        }
-    ]
-}
-
-const renderCusomerHead = (item, index) => (
+const renderMeetingsHead = (item, index) => (
     <th key={index}>{item}</th>
 )
 
-const renderCusomerBody = (item, index) => (
+const renderMeetingsBody = (item, index) => (
     <tr key={index}>
-        <td>{item.username}</td>
-        <td>{item.order}</td>
-        <td>{item.price}</td>
+        <td>{item.by}</td>
+        <td>{item.topic}</td>
+        <td>{item.description}</td>
     </tr>
 )
 
-const latestOrders = {
-    header: [
-        "order id",
-        "user",
-        "total price",
-        "date",
-        "status"
-    ],
-    body: [
-        {
-            id: "#OD1711",
-            user: "john doe",
-            date: "17 Jun 2021",
-            price: "$900",
-            status: "shipping"
-        },
-        {
-            id: "#OD1712",
-            user: "frank iva",
-            date: "1 Jun 2021",
-            price: "$400",
-            status: "paid"
-        },
-        {
-            id: "#OD1713",
-            user: "anthony baker",
-            date: "27 Jun 2021",
-            price: "$200",
-            status: "pending"
-        },
-        {
-            id: "#OD1712",
-            user: "frank iva",
-            date: "1 Jun 2021",
-            price: "$400",
-            status: "paid"
-        },
-        {
-            id: "#OD1713",
-            user: "anthony baker",
-            date: "27 Jun 2021",
-            price: "$200",
-            status: "refund"
-        }
-    ]
-}
-
-const orderStatus = {
-    "shipping": "primary",
-    "pending": "warning",
-    "paid": "success",
-    "refund": "danger"
-}
-
-const renderOrderHead = (item, index) => (
+const renderTodosHead = (item, index) => (
     <th key={index}>{item}</th>
 )
 
-const renderOrderBody = (item, index) => (
+const renderTodosBody = (item, index) => (
     <tr key={index}>
-        <td>{item.id}</td>
-        <td>{item.user}</td>
-        <td>{item.price}</td>
-        <td>{item.date}</td>
-        <td>
-            <Badge type={orderStatus[item.status]} content={item.status}/>
-        </td>
+        <td>{item.task}</td>
+        <td>{item.description}</td>
+        <td>{moment(item.duedate).format('MMMM Do YYYY, h:mm:ss a')}</td>
     </tr>
 )
 
 const Dashboard = () => {
 
     const themeReducer = useSelector(state => state.ThemeReducer.mode)
-    const [ todos, setTodos ] = useState("0")
+    const [user, setUser] = useState({})
+    const [todos, setTodos] = useState("0")
+    const [meets, setMeets] = useState("0")
+    const [allThemMeets, setAllThemMeets] = useState([])
+    const [allThemTodos, setAllThemTodos] = useState([])
+    const [showMeets, setShowMeets] = useState(false)
+    const [showTodos, setShowTodos] = useState(false)
+
+    const [meetsHead] = useState([
+        "Planned By",
+        "Topic",
+        "Description"
+    ])
+    const [meetsBody, setMeetsBody] = useState([])
+
+    const [TodosHead] = useState([
+        "Task",
+        "Descirption",
+        "Due Date"
+    ])
+    const [todosBody, setTodosBody] = useState([])
+
 
     useEffect(() => {
 
         const statusCardsCreator = async () => {
             const userFind = await axios.get('/getLoginUser')
+            setUser(userFind.data)
             var icon
             var todoCount = 0
             const allTodos = await axios.get('/todo/gettodo')
+            setAllThemTodos(allTodos.data)
             allTodos.data.forEach((todo) => {
                 (todo.status === false && userFind.data.userMail === todo.userMail) && todoCount++
             })
             setTodos(todoCount.toString())
-        
-            if (userFind.data.userPri === 1){
+
+            var meetCount = 0
+            const allMeets = await axios.get('/meet/getmeets')
+            setAllThemMeets(allMeets.data)
+            allMeets.data.forEach((meet) => {
+                ((meet.status === false) && (userFind.data.userName === meet.by)) && meetCount++
+            })
+            setMeets(meetCount.toString())
+
+            if (userFind.data.userPri === 1) {
                 icon = 'fa-solid fa-chess-king'
             }
-            else if (userFind.data.userPri === 2){
+            else if (userFind.data.userPri === 2) {
                 icon = 'fa-solid fa-chess-queen'
             }
-            else if (userFind.data.userPri === 3){
+            else if (userFind.data.userPri === 3) {
                 icon = 'fa-solid fa-chess-rook'
             }
-            else if (userFind.data.userPri === 4){
+            else if (userFind.data.userPri === 4) {
                 icon = 'fa-solid fa-chess-knight'
             }
-            else if (userFind.data.userPri === 5){
+            else if (userFind.data.userPri === 5) {
                 icon = 'fa-solid fa-chess-pawn'
             }
             else {
@@ -226,25 +166,65 @@ const Dashboard = () => {
                     link: "/hierarchy"
                 },
                 {
-                    icon: "bx bx-check-square",
+                    icon: "fa-solid fa-check",
                     count: todos,
-                    title: "Remaining ToDos",
+                    title: "All Remaining ToDos",
                     link: "/todo"
                 },
                 {
-                    icon: "bx bx-dollar-circle",
-                    count: "$2,632",
-                    title: "Total income"
+                    icon: "fa-solid fa-handshake",
+                    count: meets,
+                    title: "Upcoming Meets",
+                    link: "/meetings"
                 },
                 {
-                    icon: "bx bx-receipt",
-                    count: "1,711",
-                    title: "Total orders"
+                    icon: "bx bx-plus-circle",
+                    count: "?",
+                    title: "Add Suggestion",
+                    link: "/suggest"
                 }
             ]
         }
         statusCardsCreator()
-    }, [todos])
+    }, [todos, meets])
+
+    useEffect(() => {
+        const getMeets = () => {
+            const tempBody = []
+            allThemMeets.forEach((meet) => {
+                if (meet.by === user.userName) {
+                    const oneMeet = {
+                        by: meet.by,
+                        topic: meet.topic,
+                        description: meet.description
+                    }
+                    tempBody.push(oneMeet)
+                }
+            })
+            setMeetsBody(tempBody)
+        }
+        getMeets()
+    }, [showMeets])
+
+    useEffect(() => {
+        const getTodos = () => {
+            const tempBody = []
+            allThemTodos.forEach((todo) => {
+                if (todo.userMail === user.userMail) {
+                    const oneTodo = {
+                        id: todo._id,
+                        task: todo.task,
+                        description: todo.description,
+                        status: todo.status,
+                        duedate: todo.duedate
+                    }
+                    tempBody.push(oneTodo)
+                }
+            })
+            setTodosBody(tempBody)
+        }
+        getTodos()
+    }, [showTodos])
 
     return (
         <div>
@@ -271,10 +251,10 @@ const Dashboard = () => {
                         <Chart
                             options={themeReducer === 'theme-mode-dark' ? {
                                 ...chartOptions.options,
-                                theme: { mode: 'dark'}
+                                theme: { mode: 'dark' }
                             } : {
                                 ...chartOptions.options,
-                                theme: { mode: 'light'}
+                                theme: { mode: 'light' }
                             }}
                             series={chartOptions.series}
                             type='line'
@@ -282,40 +262,53 @@ const Dashboard = () => {
                         />
                     </div>
                 </div>
-                <div className="col-4">
+                <div className="col-5">
                     <div className="card">
-                        <div className="card__header">
-                            <h3>top customers</h3>
-                        </div>
-                        <div className="card__body">
-                            <Table
-                                headData={topCustomers.head}
-                                renderHead={(item, index) => renderCusomerHead(item, index)}
-                                bodyData={topCustomers.body}
-                                renderBody={(item, index) => renderCusomerBody(item, index)}
-                            />
-                        </div>
-                        <div className="card__footer">
-                            <Link to='/customers'>view all</Link>
-                        </div>
+                        <h2>Upcoming Meetings</h2>
+                        <button className='button-primary' onClick={(e) => {
+                            e.preventDefault()
+                            setShowMeets(!showMeets)
+                        }}>
+                            {showMeets ? 'Hide' : 'Show'}
+                        </button>
+                        {showMeets && <div>
+                            <div className="card__body">
+                                <Table
+                                    headData={meetsHead}
+                                    renderHead={(item, index) => renderMeetingsHead(item, index)}
+                                    bodyData={meetsBody}
+                                    renderBody={(item, index) => renderMeetingsBody(item, index)}
+                                />
+                            </div>
+                            <button className="card__footer">
+                                <Link to='/meetings'>View all</Link>
+                            </button>
+                        </div>}
+
                     </div>
                 </div>
-                <div className="col-8">
+                <div className="col-7">
                     <div className="card">
-                        <div className="card__header">
-                            <h3>latest orders</h3>
-                        </div>
-                        <div className="card__body">
-                            <Table
-                                headData={latestOrders.header}
-                                renderHead={(item, index) => renderOrderHead(item, index)}
-                                bodyData={latestOrders.body}
-                                renderBody={(item, index) => renderOrderBody(item, index)}
-                            />
-                        </div>
-                        <div className="card__footer">
-                            <Link to='/orders'>view all</Link>
-                        </div>
+                        <h2>Upcoming Todos</h2>
+                        <button className='button-primary' onClick={(e) => {
+                            e.preventDefault()
+                            setShowTodos(!showTodos)
+                        }}>
+                            {showTodos ? 'Hide' : 'Show'}
+                        </button>
+                        { showTodos && <div>
+                            <div className="card__body">
+                                <Table
+                                    headData={TodosHead}
+                                    renderHead={(item, index) => renderTodosHead(item, index)}
+                                    bodyData={todosBody}
+                                    renderBody={(item, index) => renderTodosBody(item, index)}
+                                />
+                            </div>
+                            <button className="card__footer">
+                                <Link to='/todo'>View all</Link>
+                            </button>
+                        </div> }
                     </div>
                 </div>
             </div>

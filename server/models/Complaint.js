@@ -1,11 +1,15 @@
 const mongoose = require("mongoose")
 
-const todoSchema = new mongoose.Schema({
-    userMail: {
+const CompSchema = new mongoose.Schema({
+    by: {
         type: String,
         required: true
     },
-    task: {
+    towards: {
+        type: String,
+        required: true
+    },
+    area: {
         type: String,
         required: true
     },
@@ -13,15 +17,15 @@ const todoSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status: {
-        type: Boolean,
+    improvement: {
+        type: String,
         required: true
     },
-    duedate: {
+    submittedOn: {
         type: String,
         required: true
     }
 })
 
-const todo = mongoose.model("ToDoDB", todoSchema)
-module.exports = todo
+const comp = mongoose.model("ComplaintsDB", CompSchema)
+module.exports = comp

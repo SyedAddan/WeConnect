@@ -10,9 +10,9 @@ module.exports = async () => {
             process.env.DB,
             connectionParams
         )
-        console.log("Connected to Database!")
+        console.log("Connected to Database 🚁!")
     } catch (error) {
-        console.log("Could not Connect to Database!")
+        console.log("Could not Connect to Database 🚩!")
         console.log(error.code)
     }
 }
